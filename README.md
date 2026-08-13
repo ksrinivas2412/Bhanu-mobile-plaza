@@ -1,0 +1,1 @@
+Create .env.local with VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY. Never commit .env.local.
