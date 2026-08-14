@@ -98,7 +98,7 @@ function Admin(){
       <section className="panel">
         <h2>{editing?"Edit mobile":"Add new mobile"}</h2>
         <form className="form" onSubmit={save}>
-          <label>Brand<select value={form.brand} onChange={e=>setForm({...form,brand:e.target.value})}><option>Samsung</option><option>Apple</option><option>OnePlus</option><option>Vivo</option><option>Redmi</option><option>Poco</option><option>iQOO</option><option>Oppo</option><option>Lava</option></select></label>
+          <label>Brand<select value={form.brand} onChange={e=>setForm({...form,brand:e.target.value})}><option>Samsung</option><option>Apple</option><option>Moto</option><option>Itel</option><option>Realme</option><option>OnePlus</option><option>Vivo</option><option>Redmi</option><option>Poco</option><option>iQOO</option><option>Oppo</option><option>Lava</option></select></label>
           <label>Model<input required value={form.model} onChange={e=>setForm({...form,model:e.target.value})} placeholder="Galaxy A56"/></label>
           <label>RAM<input value={form.ram} onChange={e=>setForm({...form,ram:e.target.value})} placeholder="8 GB"/></label>
           <label>Storage<input value={form.storage} onChange={e=>setForm({...form,storage:e.target.value})} placeholder="256 GB"/></label>
