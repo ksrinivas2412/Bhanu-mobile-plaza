@@ -2,16 +2,105 @@ import React,{useEffect,useMemo,useState} from "react";
 import {createRoot} from "react-dom/client";
 import {supabase} from "./supabase";
 import "./styles.css";
+import shop1 from "./assets/shop1.jpeg";
+import shop2 from "./assets/shop2.jpeg";
+import shop3 from "./assets/shop3.jpeg";
 const PHONE="918125552523", money=n=>"₹"+Number(n).toLocaleString("en-IN");
 function App(){
  const [products,setProducts]=useState([]),[loading,setLoading]=useState(true),[error,setError]=useState("");
  const [q,setQ]=useState(""),[brand,setBrand]=useState("All"),[available,setAvailable]=useState(false),[sort,setSort]=useState("featured");
+ const shopPhotos=[shop1,shop2,shop3];
+ const [currentShopPhoto,setCurrentShopPhoto]=useState(0);
+ useEffect(()=>{
+   const timer=setInterval(()=>setCurrentShopPhoto(prev=>(prev+1)%shopPhotos.length),4000);
+   return ()=>clearInterval(timer);
+ },[shopPhotos.length]);
  useEffect(()=>{(async()=>{const {data,error}=await supabase.from("mobiles").select("*").order("created_at",{ascending:false});if(error)setError(error.message);else setProducts(data||[]);setLoading(false)})()},[]);
  const brands=useMemo(()=>["All",...new Set(products.map(x=>x.brand).filter(Boolean))],[products]);
  const list=useMemo(()=>{let a=products.filter(p=>(`${p.brand||""} ${p.model||""} ${p.ram||""} ${p.storage||""} ${p.color||""}`).toLowerCase().includes(q.toLowerCase())&&(brand==="All"||p.brand===brand)&&(!available||p.stock));if(sort==="low")a.sort((x,y)=>Number(x.price)-Number(y.price));if(sort==="high")a.sort((x,y)=>Number(y.price)-Number(x.price));return a},[products,q,brand,available,sort]);
  const ask=p=>window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(`Hi Bhanu Mobile Plaza, I am interested in ${p.brand} ${p.model} (${p.ram||""} ${p.storage||""}) priced at ${money(p.price)}. Is it available?`)}`,"_blank");
  return <div><header className="top"><div className="nav"><div className="logo"><span>BM</span><div><b>Bhanu Mobile Plaza</b><small>SEETHANGARAM</small></div></div><div className="navlinks"><a href="#stock">Stock</a><a href="#contact">Contact</a><a className="wa" href={`https://wa.me/${PHONE}`} target="_blank">WhatsApp</a></div></div></header>
- <section className="hero"><div className="heroText"><div className="pill">📱 YOUR LOCAL MOBILE STORE</div><h1>Find your next<br/><em>smartphone.</em></h1><p>Check our latest mobile stock and prices online before visiting Bhanu Mobile Plaza in Seethangaram.</p><div className="heroBtns"><a href="#stock" className="primary">View available phones ↓</a><a href={`tel:+${PHONE}`} className="secondary">☎ 81255 52523</a></div><div className="trust"><span>✓ Latest models</span><span>✓ Competitive prices</span><span>✓ Local support</span></div></div><div className="heroPhones"><div className="orb"></div><div className="phone p1">S</div><div className="phone p2">1+</div><div className="phone p3">V</div></div></section>
+ <section className="hero">
+
+  {/* FULL-WIDTH ANIMATED SHOP PHOTOS */}
+  <div className="shopHeroSlider">
+
+    {shopPhotos.map((photo, index) => (
+      <img
+        key={photo}
+        src={photo}
+        alt={`Bhanu Mobile Plaza ${index + 1}`}
+        className={
+          index === currentShopPhoto
+            ? "shopSlide active"
+            : "shopSlide"
+        }
+      />
+    ))}
+
+    <div className="sliderDots">
+      {shopPhotos.map((_, index) => (
+        <button
+          key={index}
+          className={
+            index === currentShopPhoto
+              ? "activeDot"
+              : ""
+          }
+          onClick={() => setCurrentShopPhoto(index)}
+          aria-label={`Show shop photo ${index + 1}`}
+        />
+      ))}
+    </div>
+
+  </div>
+
+  {/* TEXT IS BELOW THE IMAGE */}
+  <div className="heroContent">
+
+    <div className="pill">
+      📱 YOUR LOCAL MOBILE STORE
+    </div>
+
+    <h1>
+      Find your next
+      <br />
+      <em>smartphone.</em>
+    </h1>
+
+    <p>
+      Check our latest mobile stock and prices
+      online before visiting Bhanu Mobile Plaza
+      in Seethangaram.
+    </p>
+
+    <div className="heroBtns">
+
+      <a
+        href="#stock"
+        className="primary"
+      >
+        View available phones ↓
+      </a>
+
+      <a
+        href={`tel:+${PHONE}`}
+        className="secondary"
+      >
+        ☎ 81255 52523
+      </a>
+
+    </div>
+
+    <div className="trust">
+      <span>✓ Latest models</span>
+      <span>✓ Competitive prices</span>
+      <span>✓ Local support</span>
+    </div>
+
+  </div>
+
+</section>
  <main id="stock"><div className="sectionHead"><div><div className="eyebrow">LIVE SHOP STOCK</div><h2>Available mobiles</h2><p>Prices and stock are loaded directly from the shop database.</p></div><strong>{loading?"Loading…":`${list.length} models`}</strong></div>
  <div className="controls"><div className="search">⌕<input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search phone or brand..."/></div><select value={sort} onChange={e=>setSort(e.target.value)}><option value="featured">Sort: Featured</option><option value="low">Price: Low to high</option><option value="high">Price: High to low</option></select></div>
  <div className="chips">{brands.map(b=><button className={brand===b?"chip on":"chip"} onClick={()=>setBrand(b)} key={b}>{b}</button>)}<label className="check"><input type="checkbox" checked={available} onChange={e=>setAvailable(e.target.checked)}/> Available only</label></div>

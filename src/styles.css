@@ -28,3 +28,205 @@
     min-height:175px;
   }
 }
+
+/* =========================================================
+   BHANU MOBILE PLAZA — SHOP IMAGE ABOVE TEXT
+   ========================================================= */
+
+.hero {
+    width: 100%;
+    padding: 0;
+    background: #0b1220;
+
+    /* Important: keep image and text vertically stacked */
+    display: block;
+}
+
+/* Full-width animated shop photo area */
+.shopHeroSlider {
+    position: relative;
+    width: 100%;
+    height: 560px;
+    overflow: hidden;
+    background: #111827;
+}
+
+.shopSlide {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center center;
+
+    opacity: 0;
+    transform: scale(1.03);
+
+    transition:
+        opacity 1.2s ease-in-out,
+        transform 5s ease-in-out;
+}
+
+.shopSlide.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Slider controls stay on the image */
+.sliderDots {
+    position: absolute;
+    z-index: 5;
+
+    left: 50%;
+    bottom: 18px;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sliderDots button {
+    width: 9px;
+    height: 9px;
+
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.65);
+
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sliderDots button.activeDot {
+    width: 25px;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+/* Text is completely BELOW the image */
+.heroContent {
+    width: 100%;
+    max-width: 1140px;
+
+    margin: 0 auto;
+    padding: 55px 25px 65px;
+
+    color: #ffffff;
+}
+
+.heroContent h1 {
+    font-family: "Space Grotesk";
+    font-size: clamp(45px, 6vw, 72px);
+    line-height: 1;
+    margin: 15px 0;
+}
+
+.heroContent h1 em {
+    color: #60a5fa;
+    font-style: normal;
+}
+
+.heroContent p {
+    max-width: 780px;
+
+    font-size: 17px;
+    line-height: 1.7;
+
+    color: #cbd5e1;
+
+    margin-bottom: 22px;
+}
+
+.heroContent .heroBtns {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.heroContent .trust {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+
+    margin-top: 20px;
+
+    color: #94a3b8;
+}
+
+/* Hide any old hero-phone elements if they still exist */
+.hero .orb,
+.hero .phone,
+.heroPhones {
+    display: none !important;
+}
+
+/* Tablet */
+@media (max-width: 950px) {
+    .shopHeroSlider {
+        height: 500px;
+    }
+
+    .heroContent {
+        padding: 45px 25px 55px;
+    }
+
+    .heroContent h1 {
+        font-size: clamp(42px, 8vw, 64px);
+    }
+}
+
+/* Mobile */
+@media (max-width: 620px) {
+    .shopHeroSlider {
+        height: 380px;
+    }
+
+    .shopSlide {
+        object-position: center center;
+        transform: scale(1.01);
+    }
+
+    .shopSlide.active {
+        transform: scale(1);
+    }
+
+    .heroContent {
+        padding: 38px 20px 45px;
+    }
+
+    .heroContent h1 {
+        font-size: 42px;
+        line-height: 1;
+    }
+
+    .heroContent p {
+        font-size: 15px;
+        line-height: 1.55;
+    }
+
+    .heroContent .heroBtns {
+        gap: 9px;
+    }
+
+    .heroContent .trust {
+        gap: 10px 18px;
+        font-size: 12px;
+    }
+}
+
+/* Force the hero children to stack vertically */
+.hero > .shopHeroSlider {
+    display: block;
+    width: 100%;
+}
+
+.hero > .heroContent {
+    display: block;
+    width: 100%;
+}
